@@ -2,13 +2,14 @@
 
 class App
 {
-    private $__controller, $__action, $__params;
+    private $__controller, $__action, $__params, $_routes;
 
     function __construct()
     {
-        global $route;
-        if (!empty($route['default_controller'])) {
-            $this->__controller = $route['default_controller'];
+        global $routes;
+        $this->_routes = new Route();
+        if (!empty($routes['default_controller'])) {
+            $this->__controller = $routes['default_controller'];
         }
         $this->__action = 'index';
         $this->__params = [];
@@ -26,6 +27,8 @@ class App
 
     public function handleUrl()
     {
+        $this->_routes->handleRoute();
+
         $url = $this->getUrl();
         $urlArr = array_filter(explode('/', $url));
         $urlArr = array_values($urlArr);

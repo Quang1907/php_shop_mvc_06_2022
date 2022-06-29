@@ -1,4 +1,5 @@
-DANH SACH SAN PHAM
 <?php
-print_r($data);
-?>
+echo 'sss';
+echo '<pre>';
+print_r($product_list);
+print_r($title);
