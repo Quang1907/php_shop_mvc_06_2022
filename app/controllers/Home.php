@@ -11,5 +11,6 @@ class Home extends Controller
     {
         $data = $this->model_home->getList();
         $detail = $this->model_home->getDetail(1);
+        echo 'home controller';
     }
 }

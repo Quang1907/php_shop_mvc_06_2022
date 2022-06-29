@@ -27,11 +27,32 @@ class App
 
     public function handleUrl()
     {
-        $this->_routes->handleRoute();
-
         $url = $this->getUrl();
+        $url = $this->_routes->handleRoute($url);
         $urlArr = array_filter(explode('/', $url));
         $urlArr = array_values($urlArr);
+        $urlCheck = '';
+        if (!empty($urlArr)) {
+            foreach ($urlArr as $key => $item) {
+                $urlCheck .= $item . '/';
+                $fileCheck = rtrim($urlCheck, '/');
+                $fileArr = explode('/', $fileCheck);
+                $fileArr[count($fileArr) - 1] = ucfirst($fileArr[count($fileArr) - 1]);
+                $fileCheck = implode('/', $fileArr);
+                if (!empty($urlArr[$key - 1])) {
+                    unset($urlArr[$key - 1]);
+                }
+                // print_r($fileCheck . '<br>');
+                if (file_exists('app/controllers/' .   $fileCheck . '.php')) {
+                    $urlCheck = $fileCheck;
+                    break;
+                }
+            }
+            $urlArr = array_values($urlArr);
+        }
+        // echo '<pre>';
+        // var_dump($urlArr);
+        // var_dump($urlCheck);
 
         // Xu ly controller     
         if (!empty($urlArr[0])) {
@@ -40,8 +61,8 @@ class App
             $this->__controller = ucfirst($this->__controller);
         }
 
-        if (file_exists('app/controllers/' . $this->__controller . '.php')) {
-            require_once 'app/controllers/' . $this->__controller . '.php';
+        if (file_exists('app/controllers/' . $urlCheck . '.php')) {
+            require_once 'app/controllers/' . $urlCheck . '.php';
             // kiem tra class $this->__controller ton tai 
             if (class_exists($this->__controller)) {
                 $this->__controller = new $this->__controller();
