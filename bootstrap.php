@@ -11,7 +11,31 @@ $folder = str_replace(strtolower($_SERVER['DOCUMENT_ROOT']), '', strtolower(_DIR
 $web_root .= $folder;
 define('_WEB_ROOT', $web_root);
 
-require_once 'configs/routes.php';
-require_once 'core/Route.php';
+/**
+ * tu dong require class trong configs
+ */
+$config_dir = scandir('configs');
+if (!empty($config_dir)) {
+    foreach ($config_dir as $conf) {
+        if ($conf != '.' &&  $conf != '..' && file_exists('configs/' . $conf)) {
+            require_once 'configs/' . $conf;
+        }
+    }
+}
+
+require_once 'core/Route.php'; // load route class
 require_once 'app/App.php'; // load app
+
+// kiem tra config va load vao database;
+if (!empty($config['database'])) {
+    $db_config = array_filter($config['database']);
+    if (!empty($db_config)) {
+        require_once 'core/Connection.php';
+        require_once 'core/Database.php';
+        // $conn = Connection::getInstance($db_config);
+    }
+}
+
+require_once 'core/Model.php';
+
 require_once 'core/Controller.php'; // load base controller

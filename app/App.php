@@ -27,6 +27,7 @@ class App
 
     public function handleUrl()
     {
+
         $url = $this->getUrl();
         $url = $this->_routes->handleRoute($url);
         $urlArr = array_filter(explode('/', $url));
@@ -50,27 +51,27 @@ class App
             }
             $urlArr = array_values($urlArr);
         }
-        // echo '<pre>';
-        // var_dump($urlArr);
-        // var_dump($urlCheck);
 
         // Xu ly controller     
         if (!empty($urlArr[0])) {
             $this->__controller = ucfirst($urlArr[0]);
+            unset($urlArr[0]);
         } else {
             $this->__controller = ucfirst($this->__controller);
         }
 
+        if (empty($urlCheck)) {
+            $urlCheck = $this->__controller;
+        }
+
         if (file_exists('app/controllers/' . $urlCheck . '.php')) {
             require_once 'app/controllers/' . $urlCheck . '.php';
-            // kiem tra class $this->__controller ton tai 
             if (class_exists($this->__controller)) {
                 $this->__controller = new $this->__controller();
                 unset($urlArr[0]);
             } else {
                 $this->loadError();
             }
-            // $this->__controller->index();
         } else {
             $this->loadError();
         }

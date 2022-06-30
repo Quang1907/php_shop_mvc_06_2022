@@ -4,17 +4,18 @@
  * ke thua tu class model 
  */
 
-class HomeModel
+class HomeModel extends Model
 {
-    protected $_table = 'products';
+    protected $_table = 'product';
 
     public function getList()
     {
+
         $data = [
-            'item 1',
-            'item 2',
-            'item 3',
+            'name' => 'quang1',
+            'age' => 23,
         ];
+        $data = $this->db->insert($this->_table, $data);
         return $data;
     }
 

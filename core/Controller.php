@@ -10,6 +10,7 @@ class Controller
             // check class ton tai
             if (class_exists($model)) {
                 $model = new $model();
+                
                 return $model;
             }
         }
