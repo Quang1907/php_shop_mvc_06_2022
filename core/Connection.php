@@ -16,7 +16,9 @@ class Connection
             self::$connect = $conn;
         } catch (Exception $ex) {
             $mess = $ex->getMessage();
-            die($mess);
+            $data['message'] = $mess;
+            App::$app->loadError($data, 'database');
+            die();
         }
     }
 

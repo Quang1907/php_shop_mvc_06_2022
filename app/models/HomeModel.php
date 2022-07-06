@@ -8,6 +8,21 @@ class HomeModel extends Model
 {
     protected $_table = 'product';
 
+    function tableFill()
+    {
+        return 'product';
+    }
+
+    function fieldFill()
+    {
+        return '';
+    }
+
+    function primaryKey()
+    {
+        return 'id';
+    }
+
     public function getList()
     {
 
@@ -27,5 +42,20 @@ class HomeModel extends Model
             'item 3',
         ];
         return $data[$id];
+    }
+
+    public function getListProduct()
+    {
+        // $result =  $this->db->insert('product', $data);
+        // $result = $this->db->table('product')->orderBy('id', 'DESC')->whereLike('name', '%quang%')->limit(3)->get();
+        $result = $this->db->table('product as p')->join('user as u', 'p.user_id = u.id')->get();
+        return $result;
+        // $this->db->where('id', '>', 3);
+    }
+
+    public function getDetailProduct($name)
+    {
+        $data = $this->db->table('product')->whereLike('name', $name)->get();
+        return $data;
     }
 }

@@ -2,17 +2,18 @@
 
 class Database
 {
-    private $_conn, $_db;
+    private $_conn, $db_config;
+    use QueryBuilder;
+
     public function __construct()
     {
         global $db_config;
-        $this->_db = $db_config['db'];
+        $this->db_config = $db_config;
         $this->_conn =  Connection::getInstance(($db_config));
     }
 
     public function insert($table, $data)
     {
-        
         if (!empty($data)) {
             $fielStr = '';
             $valueStr = '';
@@ -20,7 +21,7 @@ class Database
                 $fielStr .= $key . ',';
                 $valueStr .= "'" . $value . "',";
             }
-            
+
             $fielStr = rtrim($fielStr, ',');
             $valueStr = rtrim($valueStr, ',');
             $sql = "INSERT INTO  $table($fielStr) VALUES ($valueStr)";
@@ -61,9 +62,17 @@ class Database
 
     public function query($sql)
     {
-        $statement =  $this->_conn->prepare($sql);
-        $statement->execute();
-        return $statement;
+        try {
+            // $this->_conn =  Connection::getInstance(($this->db_config));
+            $statement =  $this->_conn->prepare($sql);
+            $statement->execute();
+            return $statement;
+        } catch (Exception $ex) {
+            $mess = $ex->getMessage();
+            $data['message'] = $mess;
+            App::$app->loadError($data, 'database');
+            die();
+        }
     }
 
     public function lastInsertId()
