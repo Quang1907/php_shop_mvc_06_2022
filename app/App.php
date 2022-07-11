@@ -2,7 +2,7 @@
 
 class App
 {
-    private $__controller, $__action, $__params, $_routes;
+    private $__controller, $__action, $__params, $_routes, $_db;
 
     static public $app;
 
@@ -16,6 +16,17 @@ class App
         }
         $this->__action = 'index';
         $this->__params = [];
+
+        /**
+         * $this->table()->get();
+         */
+
+        if (class_exists('DB')) {
+            $dbObject = new DB();
+            $this->_db = $dbObject->db;
+        }
+        // var_dump($this->_db);
+
         $this->handleUrl();
     }
 
@@ -71,6 +82,9 @@ class App
             require_once 'app/controllers/' . $urlCheck . '.php';
             if (class_exists($this->__controller)) {
                 $this->__controller = new $this->__controller();
+                if (!empty($this->_db)) {
+                    $this->__controller->db = $this->_db;
+                }
                 unset($urlArr[0]);
             } else {
                 $this->loadError();

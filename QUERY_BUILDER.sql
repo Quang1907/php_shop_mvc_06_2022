@@ -14,3 +14,4 @@ SQL Result : SELECT * FROM product where name = "quang" and id > 3;
 11. WhereLike(): $this->db->WhereLike(field, value)
 12. select(): $this->db->select(field)
 13. orderBy(): $his->db->orderBy(field, type)
+14. lastId(): $this->db->lastId()

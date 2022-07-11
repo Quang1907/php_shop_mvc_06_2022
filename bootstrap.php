@@ -33,10 +33,12 @@ if (!empty($config['database'])) {
         require_once 'core/Connection.php';
         require_once 'core/QueryBuilder.php';
         require_once 'core/Database.php';
+        require_once 'core/DB.php';
         // $conn = Connection::getInstance($db_config);
     }
 }
 
-require_once 'core/Model.php';
-
+require_once 'core/Model.php'; // load base model
 require_once 'core/Controller.php'; // load base controller
+require_once 'core/Request.php'; // load request
+require_once 'core/Response.php'; // load response

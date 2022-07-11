@@ -8,6 +8,7 @@ trait QueryBuilder
     public $limit = '';
     public $orderBy = '';
     public $innerJoin = '';
+    public $insert = '';
 
     public function table($tableName)
     {
@@ -17,7 +18,7 @@ trait QueryBuilder
 
     public function where($field, $compare, $value)
     {
-        $this->operator = " WHERE ";
+        $this->operator = " WHERE";
         if (!empty($this->where)) {
             $this->operator = " AND ";
         }
@@ -82,6 +83,36 @@ trait QueryBuilder
         return $this;
     }
 
+    public function insert($data)
+    {
+        $tableName = $this->tableName;
+        $insertStatus = $this->insertData($tableName, $data);
+        return $insertStatus;
+    }
+
+    public function update($data)
+    {
+        $whereUpdate = str_replace('WHERE', '', $this->where);
+        $whereUpdate = trim($whereUpdate);
+        $tableName = $this->tableName;
+        $updateStatus = $this->updateData($tableName, $data, $whereUpdate);
+        return $updateStatus;
+    }
+
+    public function delete()
+    {
+        $whereDelete = str_replace('WHERE', '', $this->where);
+        $whereDelete = trim($whereDelete);
+        $tableName = $this->tableName;
+        $deleteStatus = $this->deleteData($tableName, $whereDelete);
+        return $whereDelete;
+    }
+
+    public function lastId()
+    {
+        return $this->lastInsertId();
+    }
+
     public function first()
     {
         $sqlQuery = "SELECT $this->selectField FROM $this->tableName $this->innerJoin $this->where $this->orderBy $this->limit";
@@ -111,5 +142,6 @@ trait QueryBuilder
         $this->limit = '';
         $this->orderBy = '';
         $this->innerJoin = '';
+        $this->insert = '';
     }
 }

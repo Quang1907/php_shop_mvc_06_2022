@@ -12,7 +12,7 @@ class Database
         $this->_conn =  Connection::getInstance(($db_config));
     }
 
-    public function insert($table, $data)
+    public function insertData($table, $data)
     {
         if (!empty($data)) {
             $fielStr = '';
@@ -31,7 +31,7 @@ class Database
         return true;
     }
 
-    public function update($table, $data, $condition = '')
+    public function updateData($table, $data, $condition = '')
     {
         if (!empty($data)) {
             $updateStr = '';
@@ -49,10 +49,10 @@ class Database
         return true;
     }
 
-    public function delete($table, $condition = ''): bool
+    public function deleteData($table, $condition = ''): bool
     {
         $sql = 'DELETE FROM ' . $table;
-        if (!empty($data)) {
+        if (!empty($condition)) {
             $sql = 'DELETE FROM ' . $table . ' WHERE ' . $condition;
         }
         $status = $this->query($sql);

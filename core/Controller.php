@@ -2,6 +2,8 @@
 
 class Controller
 {
+    public $db;
+
     public function model($model)
     {
         // check file ton tai
@@ -10,7 +12,6 @@ class Controller
             // check class ton tai
             if (class_exists($model)) {
                 $model = new $model();
-                
                 return $model;
             }
         }
