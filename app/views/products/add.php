@@ -1,11 +1,6 @@
 <form method="post" action="<?= _WEB_ROOT ?>/home/post_product">
-    <div class="mb-3">
-        <label for="" class="form-label">Name</label>
-        <input type="text" name="name" id="" class="form-control" placeholder="Name">
-    </div>
-    <div class="mb-3">
-        <label for="" class="form-label">Age</label>
-        <input type="text" name="age[]" id="" class="form-control" placeholder="age">
-    </div>
+    <input type="text" name="name" value="" placeholder="input name">
+    <input type="email" name="age" value="" placeholder="input age">
+    <input type="hidden" name="user_id" value="1">
     <button type="submit">submit</button>
 </form>

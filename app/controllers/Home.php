@@ -34,20 +34,47 @@ class Home extends Controller
         // $this->product->deleteProduct(199);
     }
 
-    public function get_product()
+    public function get_user()
     {
-        $this->render('products/add');
-        $request = new Request();
-        $data = $request->getFields();
-        print_r($data);
+        $this->render('user/add');
     }
-    public function post_product()
+
+    public function post_user()
     {
-        $this->render('products/add');
+        echo '<pre>';
         $request = new Request();
-        $data = $request->getFields()['name'];
-        print_r($data);
-        $response = new Response();
+        $request->rules([
+            'fullname' => 'required|min:5|max:30',
+            'email' => 'required|email|min:6',
+            'password' => 'required|min:3',
+            'confirm_password' => 'required|min:3|match:password'
+        ]);
+
+        $request->messages([
+            'fullname.required' => 'ho ten khong duoc de trong',
+            'fullname.min' => 'ho ten khong nho hon 5 ky tu',
+            'fullname.max' => 'ho ten phai nho hon 30 ky tu',
+            'email.required' => 'email khong duoc de trong',
+            'email.email' => 'dinh dang email khong dung',
+            'email.min' => 'email khong qua 6 ky tu',
+            'password.required' => 'mat khau khong duoc de trong',
+            'password.min' => 'mat khau khong nho hon 3 ky tu',
+            'confirm_password.required' => 'nhap lai mat khau khong duoc de trong',
+            'confirm_password.min' => 'confirm khong nho hon 3 ky tu',
+            'confirm_password.match' => 'confirm sai',
+        ]);
+
+        $validate = $request->validate();
+        var_dump($validate);
+        // print_r($request->errors);
+
+        // echo $request->error('fullname');
+
+
+
+
+        // $data = $request->getFields();
+        // $response = new Response();
         // $response->redirect('');
     }
 }
