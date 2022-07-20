@@ -1,7 +1,7 @@
 <?php
 class Home extends Controller
 {
-    public $product;
+    public $product, $data;
 
     public function __construct()
     {
@@ -41,36 +41,44 @@ class Home extends Controller
 
     public function post_user()
     {
-        echo '<pre>';
         $request = new Request();
-        $request->rules([
-            'fullname' => 'required|min:5|max:30',
-            'email' => 'required|email|min:6',
-            'password' => 'required|min:3',
-            'confirm_password' => 'required|min:3|match:password'
-        ]);
+        if ($request->isPost()) {
+            $request->rules([
+                'fullname' => 'required|min:5|max:30',
+                'email' => 'required|email|min:6',
+                'password' => 'required|min:3',
+                'confirm_password' => 'required|min:3|match:password'
+            ]);
 
-        $request->messages([
-            'fullname.required' => 'ho ten khong duoc de trong',
-            'fullname.min' => 'ho ten khong nho hon 5 ky tu',
-            'fullname.max' => 'ho ten phai nho hon 30 ky tu',
-            'email.required' => 'email khong duoc de trong',
-            'email.email' => 'dinh dang email khong dung',
-            'email.min' => 'email khong qua 6 ky tu',
-            'password.required' => 'mat khau khong duoc de trong',
-            'password.min' => 'mat khau khong nho hon 3 ky tu',
-            'confirm_password.required' => 'nhap lai mat khau khong duoc de trong',
-            'confirm_password.min' => 'confirm khong nho hon 3 ky tu',
-            'confirm_password.match' => 'confirm sai',
-        ]);
+            $request->messages([
+                'fullname.required' => 'ho ten khong duoc de trong',
+                'fullname.min' => 'ho ten khong nho hon 5 ky tu',
+                'fullname.max' => 'ho ten phai nho hon 30 ky tu',
+                'email.required' => 'email khong duoc de trong',
+                'email.email' => 'dinh dang email khong dung',
+                'email.min' => 'email khong qua 6 ky tu',
+                'password.required' => 'mat khau khong duoc de trong',
+                'password.min' => 'mat khau khong nho hon 3 ky tu',
+                'confirm_password.required' => 'nhap lai mat khau khong duoc de trong',
+                'confirm_password.min' => 'confirm khong nho hon 3 ky tu',
+                'confirm_password.match' => 'confirm sai',
+            ]);
 
-        $validate = $request->validate();
-        var_dump($validate);
+            $validate = $request->validate();
+            if (!$validate) {
+                $this->data['errors']  = $request->errors();
+                $this->data['msg'] = 'da co loi. vui long kiem tra lai';
+                $this->data['old'] = $request->getFields();
+            }
+            $this->render('user/add', $this->data);
+        } else {
+            $response  = new Response();
+            $response->redirect('home/get_user');
+        }
+        // var_dump($validate); 
         // print_r($request->errors);
 
         // echo $request->error('fullname');
-
-
 
 
         // $data = $request->getFields();

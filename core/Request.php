@@ -127,12 +127,18 @@ class Request
     }
 
     // get errors
-    public function error($fieldName)
+    public function errors($fieldName = '')
     {
-        if (!empty($this->errors[$fieldName])) {
-            return reset($this->errors[$fieldName]);
+        if (!empty($this->errors)) {
+            if (empty($fieldName)) {
+                $errorsArr = [];
+                foreach ($this->errors as $key => $error) {
+                    $errorsArr[$key] = reset($error);
+                }
+                return $errorsArr;
+            }
+            return reset($this->errors);
         }
-        return false;
     }
 
     public function setErrors($fieldName, $ruleName)
