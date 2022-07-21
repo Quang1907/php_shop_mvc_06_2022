@@ -156,6 +156,7 @@ class Request
                             }
                         }
                     }
+                    
                     // callback validate 
                     if (preg_match("~^callback_(.+)~is", $ruleName, $callbackArr)) {
                         if (!empty($callbackArr[1])) {

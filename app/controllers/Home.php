@@ -10,6 +10,25 @@ class Home extends Controller
 
     public function index()
     {
+        // $check =  Session::data('username', 'quangcntt');
+        // var_dump($check);
+        // $sessionData = Session::data(
+        //     'username',
+        //     [
+        //         'name' => 'quangit',
+        //         'email' => 'quang@gmail.com'
+        //     ]
+        // );
+        // $sessionData = Session::data(
+        //     'password',
+        //     23424387
+        // );
+        // echo '<pre>';
+        // Session::flash("msg", "them du lieu thanh cong");
+        // $msg = Session::flash("msg");
+        // $check =  Session::data();
+        // var_dump($check);
+
         $this->product->all();
         echo '<pre>';
         $data = $this->product->getListProduct();
@@ -36,7 +55,10 @@ class Home extends Controller
 
     public function get_user()
     {
-        $this->render('user/add');
+        $this->data['errors'] = Session::flash('errors');
+        $this->data['msg'] = Session::flash('msg');
+        $this->data['old'] = Session::flash('old');
+        $this->render('user/add', $this->data);
     }
 
     public function post_user()
@@ -71,15 +93,22 @@ class Home extends Controller
 
             $validate = $request->validate();
             if (!$validate) {
-                $this->data['errors']  = $request->errors();
-                $this->data['msg'] = 'da co loi. vui long kiem tra lai';
-                $this->data['old'] = $request->getFields();
+                Session::flash('errors', $request->errors());
+                Session::flash('msg', 'da co loi. vui long kiem tra lai');
+                Session::flash('old',  $request->getFields());
+                // $this->data['errors']  = $request->errors();
+                // $this->data['msg'] = 'da co loi. vui long kiem tra lai';
+                // $this->data['old'] = $request->getFields();
             }
-            $this->render('user/add', $this->data);
-        } else {
-            $response  = new Response();
-            $response->redirect('home/get_user');
+            // $this->render('user/add', $this->data);
         }
+        // else {
+        //     $response  = new Response();
+        //     $response->redirect('home/get_user');
+        // }
+        $response  = new Response();
+        $response->redirect('home/get_user');
+
         // var_dump($validate); 
         // print_r($request->errors);
 

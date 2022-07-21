@@ -24,6 +24,7 @@ if (!empty($config_dir)) {
 }
 
 require_once 'core/Route.php'; // load route class
+require_once 'core/Session.php';
 require_once 'app/App.php'; // load app
 
 // kiem tra config va load vao database;
