@@ -2,8 +2,13 @@
 
 class Request
 {
-    private $_rules = [], $_messages = [];
-    public $errors = [];
+    private $_rules = [], $_messages = [], $_errors = [];
+    public $db;
+
+    public function __construct()
+    {
+        $this->db = new Database();
+    }
     /**
      * 1. method
      * 2. body
@@ -79,11 +84,11 @@ class Request
                 foreach ($ruleIemsArr as $rules) {
                     $ruleName = null;
                     $ruleValue = null;
-                    $rulesArr = explode(":", $rules);
-                    $ruleName = reset($rulesArr);
+                    $ruleArr = explode(":", $rules);
+                    $ruleName = reset($ruleArr);
 
-                    if (count($rulesArr) > 1) {
-                        $ruleValue = end($rulesArr);
+                    if (count($ruleArr) > 1) {
+                        $ruleValue = end($ruleArr);
                     }
 
                     if ($ruleName == 'required') {
@@ -120,6 +125,51 @@ class Request
                             $checkValidate = false;
                         }
                     }
+
+                    if ($ruleName == 'unique') {
+                        $tableName = null;
+                        $fieldCheck = null;
+
+                        if (!empty($ruleArr[1])) {
+                            $tableName = $ruleArr[1];
+                        }
+
+                        if (!empty($ruleArr[2])) {
+                            $fieldCheck = $ruleArr[2];
+                        }
+
+                        if (!empty($fieldCheck) && !empty($tableName)) {
+                            $dataFields[$fieldName] = trim($dataFields[$fieldName]);
+                            if (count($ruleArr) == 3) {
+                                $sql = "SELECT * FROM $tableName WHERE $fieldCheck = '$dataFields[$fieldName]'";
+                            } elseif (count($ruleArr) == 4) {
+                                if (!empty($ruleArr[3]) && preg_match('~.+?\=.+?~is', $ruleArr[3])) {
+                                    $conditionWhere = $ruleArr[3];
+                                    $conditionWhere = str_replace("=", "<>", $conditionWhere);
+                                    $sql = "SELECT * FROM $tableName WHERE $fieldCheck = '$dataFields[$fieldName]' AND $conditionWhere";
+                                }
+                            }
+                            $checkExists = $this->db->query($sql)->rowCount();
+                            if ($checkExists) {
+                                $this->setErrors($fieldName, $ruleName);
+                                $checkValidate = false;
+                            }
+                        }
+                    }
+                    // callback validate 
+                    if (preg_match("~^callback_(.+)~is", $ruleName, $callbackArr)) {
+                        if (!empty($callbackArr[1])) {
+                            $callbackName = $callbackArr[1];
+                            $controller = App::$app->getCurrentController();
+                            if (method_exists($controller, $callbackName)) {
+                                $checkCallBack = call_user_func_array([$controller, $callbackName], [trim($dataFields[$fieldName])]);
+                                if (!$checkCallBack) {
+                                    $this->setErrors($fieldName, $ruleName);
+                                    $checkValidate = false;
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -129,20 +179,20 @@ class Request
     // get errors
     public function errors($fieldName = '')
     {
-        if (!empty($this->errors)) {
+        if (!empty($this->_errors)) {
             if (empty($fieldName)) {
                 $errorsArr = [];
-                foreach ($this->errors as $key => $error) {
+                foreach ($this->_errors as $key => $error) {
                     $errorsArr[$key] = reset($error);
                 }
                 return $errorsArr;
             }
-            return reset($this->errors);
+            return reset($this->_errors);
         }
     }
 
     public function setErrors($fieldName, $ruleName)
     {
-        return $this->errors[$fieldName][$ruleName] = $this->_messages[$fieldName . '.' . $ruleName];
+        return $this->_errors[$fieldName][$ruleName] = $this->_messages[$fieldName . '.' . $ruleName];
     }
 }

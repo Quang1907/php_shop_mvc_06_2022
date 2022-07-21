@@ -115,4 +115,9 @@ class App
         extract($data);
         require_once 'app/errors/' . $name . ".php";
     }
+
+    public function getCurrentController()
+    {
+        return $this->__controller;
+    }
 }

@@ -4,6 +4,9 @@
         <input type="text" name="fullname" value="<?= (!empty($old['fullname'])) ? $old['fullname'] : "" ?>" placeholder="input name"><br>
         <?= (!empty($errors['fullname'])) ? "<span style='color:red'>" . $errors['fullname'] . '</span>' : "" ?><br>
         <hr>
+        <input type="text" name="age" value="<?= (!empty($old['age'])) ? $old['age'] : "" ?>" placeholder="input age"><br>
+        <?= (!empty($errors['age'])) ? "<span style='color:red'>" . $errors['age'] . '</span>' : "" ?><br>
+        <hr>
         <input type="text" name="email" value="<?= (!empty($old['email'])) ? $old['email'] : "" ?>" placeholder="input email"><br>
         <?= (!empty($errors['email'])) ? "<span style='color:red'>" . $errors['email'] . '</span>' : "" ?><br>
         <hr>
