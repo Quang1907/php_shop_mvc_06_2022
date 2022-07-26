@@ -1,21 +1,16 @@
 <div style="text-align:center;">
-    <?= (!empty($msg)) ? $msg : "" ?>
-    <form method="post" action="<?= _WEB_ROOT ?>/home/post_user">
-        <input type="text" name="fullname" value="<?= (!empty($old['fullname'])) ? $old['fullname'] : "" ?>" placeholder="input name"><br>
-        <?= (!empty($errors['fullname'])) ? "<span style='color:red'>" . $errors['fullname'] . '</span>' : "" ?><br>
-        <hr>
-        <input type="text" name="age" value="<?= (!empty($old['age'])) ? $old['age'] : "" ?>" placeholder="input age"><br>
-        <?= (!empty($errors['age'])) ? "<span style='color:red'>" . $errors['age'] . '</span>' : "" ?><br>
-        <hr>
-        <input type="text" name="email" value="<?= (!empty($old['email'])) ? $old['email'] : "" ?>" placeholder="input email"><br>
-        <?= (!empty($errors['email'])) ? "<span style='color:red'>" . $errors['email'] . '</span>' : "" ?><br>
-        <hr>
-        <input type="password" name="password" value="<?= (!empty($old['password'])) ? $old['password'] : "" ?>" placeholder="input password"><br>
-        <?= (!empty($errors['password'])) ? "<span style='color:red'>" . $errors['password'] . '</span>' : "" ?><br>
-        <hr>
-        <input type="password" name="confirm_password" value="<?= (!empty($old['confirm_password'])) ? $old['confirm_password'] : "" ?>" placeholder="input confirm password"><br>
-        <?= (!empty($errors['confirm_password'])) ? "<span style='color:red'>" . $errors['confirm_password'] . '</span>' : "" ?><br>
-        <hr>
-        <button type="submit">submit</button>
-    </form>
+    <?php
+    HtmlHelper::formOpen('post', _WEB_ROOT . "/home/post_user");
+    HtmlHelper::input('<div>', '<br>' . form_error('fullname', "<span style='color:red'>", "</span>") . '</div>', "text", 'fullname', old('fullname'), 'input name', '', '');
+    HtmlHelper::input("<div>", "<br>" . form_error('age', "<span style='color:red'>", "</span>") . "</div>", 'number', 'age', old('age'), 'input age', "", "");
+    HtmlHelper::input("<div>", "<br>" . form_error('email', "<span style='color:red'>", "</span>") . "</div>", 'text', 'email', old('email'), 'input email', "", "");
+    HtmlHelper::input("<div>", "<br>" . form_error('password', "<span style='color:red'>", "</span>") . "</div>", 'password', 'password', old('password'), 'input password', "", "");
+    HtmlHelper::input("<div>", "<br>" . form_error('password', "<span style='color:red'>", "</span>") . "</div>", 'password', 'confirm_password', old('confirm_password'), 'input confirm password', "", "");
+    HtmlHelper::submit('submit');
+    HtmlHelper::formClose();
+    ?>
 </div>
+
+<!-- 
+<input type="text" name="fullname" value="<?php old('fullname') ?>" placeholder="input name"><br>
+    -->

@@ -156,7 +156,7 @@ class Request
                             }
                         }
                     }
-                    
+
                     // callback validate 
                     if (preg_match("~^callback_(.+)~is", $ruleName, $callbackArr)) {
                         if (!empty($callbackArr[1])) {
@@ -174,6 +174,10 @@ class Request
                 }
             }
         }
+
+        $sessionKey = Session::isInvalid();
+        Session::flash($sessionKey . '_errors', $this->errors());
+        Session::flash($sessionKey . "_old", $this->getFields());
         return $checkValidate;
     }
 

@@ -23,9 +23,20 @@ if (!empty($config_dir)) {
     }
 }
 
+// load all service
+if (!empty($config['app']['service'])) {
+    $allServices = $config['app']['service'];
+    if (!empty($allServices)) {
+        foreach ($allServices as $serviceName) {
+            if (file_exists('app/core/' . $serviceName . ".php")) {
+                require_once 'app/core/' . $serviceName . ".php";
+            }
+        }
+    }
+}
+
 require_once 'core/Route.php'; // load route class
 require_once 'core/Session.php';
-require_once 'app/App.php'; // load app
 
 // kiem tra config va load vao database;
 if (!empty($config['database'])) {
@@ -39,6 +50,21 @@ if (!empty($config['database'])) {
     }
 }
 
+// load core helpers
+require_once 'core/Helper.php';
+
+// load all helpers
+$allHelpers = scandir('app/helpers');
+
+if (!empty($allHelpers)) {
+    foreach ($allHelpers as $item) {
+        if (file_exists('app/helpers/' . $item) && $item != "." && $item != "..") {
+            require_once 'app/helpers/' . $item;
+        }
+    }
+}
+
+require_once 'app/App.php'; // load app
 require_once 'core/Model.php'; // load base model
 require_once 'core/Controller.php'; // load base controller
 require_once 'core/Request.php'; // load request

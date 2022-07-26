@@ -55,9 +55,9 @@ class Home extends Controller
 
     public function get_user()
     {
-        $this->data['errors'] = Session::flash('errors');
+        // $this->data['errors'] = Session::flash('errors');
         $this->data['msg'] = Session::flash('msg');
-        $this->data['old'] = Session::flash('old');
+        // $this->data['old'] = Session::flash('old');
         $this->render('user/add', $this->data);
     }
 
@@ -82,7 +82,7 @@ class Home extends Controller
                 'email.email' => 'dinh dang email khong dung',
                 'email.min' => 'email khong nho hon 6 ky tu',
                 'email.unique' => 'email da ton tai',
-                'password.required' => 'mat khau khong duoc de trong',
+                'password.required' => 'mat khau khong duoc de trongx',
                 'password.min' => 'mat khau khong nho hon 3 ky tu',
                 'confirm_password.required' => 'nhap lai mat khau khong duoc de trong',
                 'confirm_password.min' => 'confirm khong nho hon 3 ky tu',
@@ -93,9 +93,9 @@ class Home extends Controller
 
             $validate = $request->validate();
             if (!$validate) {
-                Session::flash('errors', $request->errors());
+                // Session::flash('errors', $request->errors());
                 Session::flash('msg', 'da co loi. vui long kiem tra lai');
-                Session::flash('old',  $request->getFields());
+                // Session::flash('old',  $request->getFields());
                 // $this->data['errors']  = $request->errors();
                 // $this->data['msg'] = 'da co loi. vui long kiem tra lai';
                 // $this->data['old'] = $request->getFields();
@@ -106,6 +106,7 @@ class Home extends Controller
         //     $response  = new Response();
         //     $response->redirect('home/get_user');
         // }
+        // Session::delete();
         $response  = new Response();
         $response->redirect('home/get_user');
 
@@ -113,8 +114,6 @@ class Home extends Controller
         // print_r($request->errors);
 
         // echo $request->error('fullname');
-
-
         // $data = $request->getFields();
         // $response = new Response();
         // $response->redirect('');
