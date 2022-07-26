@@ -45,8 +45,8 @@ class App
         $url = $this->_routes->handleRoute($url);
 
         // middleware
-        $this->handleGlobalMiddleware();
-        $this->handleRouteMiddleware($this->_routes->getUri());
+        $this->handleGlobalMiddleware($this->_db);
+        $this->handleRouteMiddleware($this->_routes->getUri(), $this->_db);
 
         $urlArr = array_filter(explode('/', $url));
         $urlArr = array_values($urlArr);
@@ -125,7 +125,7 @@ class App
         return $this->__controller;
     }
 
-    public function handleRouteMiddleware($routeKey)
+    public function handleRouteMiddleware($routeKey, $db)
     {
         global $config;
         $routeKey = trim($routeKey);
@@ -137,6 +137,9 @@ class App
                     require_once "app/middleware/$middlewareItem.php";
                     if (class_exists($middlewareItem)) {
                         $middlewareObject = new $middlewareItem();
+                        if (!empty($db)) {
+                            $middlewareObject->db = $db;
+                        }
                         $middlewareObject->handle();
                     }
                 }
@@ -144,7 +147,7 @@ class App
         }
     }
 
-    public function handleGlobalMiddleware()
+    public function handleGlobalMiddleware($db)
     {
         global $config;
         if (!empty($config['app']['globalMiddleware'])) {
@@ -154,6 +157,9 @@ class App
                     require_once "app/middleware/$middlewareItem.php";
                     if (class_exists($middlewareItem)) {
                         $middlewareObject = new $middlewareItem();
+                        if (!empty($db)) {
+                            $middlewareObject->db = $db;
+                        }
                         $middlewareObject->handle();
                     }
                 }

@@ -14,6 +14,7 @@ define('_WEB_ROOT', $web_root);
 /**
  * tu dong require class trong configs
  */
+
 $config_dir = scandir('configs');
 if (!empty($config_dir)) {
     foreach ($config_dir as $conf) {
@@ -35,6 +36,7 @@ if (!empty($config['app']['service'])) {
     }
 }
 
+require_once 'core/Load.php';
 
 // kiem tra config va load vao database;
 if (!empty($config['database'])) {
