@@ -41,9 +41,13 @@ class App
 
     public function handleUrl()
     {
-
         $url = $this->getUrl();
         $url = $this->_routes->handleRoute($url);
+
+        // middleware
+        $this->handleGlobalMiddleware();
+        $this->handleRouteMiddleware($this->_routes->getUri());
+
         $urlArr = array_filter(explode('/', $url));
         $urlArr = array_values($urlArr);
         $urlCheck = '';
@@ -119,5 +123,41 @@ class App
     public function getCurrentController()
     {
         return $this->__controller;
+    }
+
+    public function handleRouteMiddleware($routeKey)
+    {
+        global $config;
+        $routeKey = trim($routeKey);
+        // middleware app 
+        if (!empty($config['app']['routeMiddleware'])) {
+            $routeMiddlewareArr = $config['app']['routeMiddleware'];
+            foreach ($routeMiddlewareArr as $key => $middlewareItem) {
+                if ($routeKey == trim($key) && file_exists("app/middleware/$middlewareItem.php")) {
+                    require_once "app/middleware/$middlewareItem.php";
+                    if (class_exists($middlewareItem)) {
+                        $middlewareObject = new $middlewareItem();
+                        $middlewareObject->handle();
+                    }
+                }
+            }
+        }
+    }
+
+    public function handleGlobalMiddleware()
+    {
+        global $config;
+        if (!empty($config['app']['globalMiddleware'])) {
+            $globalMiddlewareArr = $config['app']['globalMiddleware'];
+            foreach ($globalMiddlewareArr as $middlewareItem) {
+                if (file_exists("app/middleware/$middlewareItem.php")) {
+                    require_once "app/middleware/$middlewareItem.php";
+                    if (class_exists($middlewareItem)) {
+                        $middlewareObject = new $middlewareItem();
+                        $middlewareObject->handle();
+                    }
+                }
+            }
+        }
     }
 }

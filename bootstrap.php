@@ -35,8 +35,6 @@ if (!empty($config['app']['service'])) {
     }
 }
 
-require_once 'core/Route.php'; // load route class
-require_once 'core/Session.php';
 
 // kiem tra config va load vao database;
 if (!empty($config['database'])) {
@@ -49,6 +47,11 @@ if (!empty($config['database'])) {
         // $conn = Connection::getInstance($db_config);
     }
 }
+
+//  middleware
+require_once 'core/Middlewares.php';
+require_once 'core/Route.php'; // load route class
+require_once 'core/Session.php';
 
 // load core helpers
 require_once 'core/Helper.php';

@@ -1,0 +1,3 @@
+- Route middleware: bo loc theo route
+- Route globals: bo loc tat ca request
+- 
