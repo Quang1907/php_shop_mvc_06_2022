@@ -55,6 +55,11 @@ require_once 'core/Middlewares.php';
 require_once 'core/Route.php'; // load route class
 require_once 'core/Session.php';
 
+// load service provider  class
+require_once 'core/ServiceProvider.php';
+// load view class
+require_once 'core/View.php';
+
 // load core helpers
 require_once 'core/Helper.php';
 

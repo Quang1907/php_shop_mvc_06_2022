@@ -42,15 +42,24 @@ class Home extends Controller
         // $this->model_home->getDetail(1);
         // $data = $this->product->first();
         // var_dump($data);
-        $data = [
-            'name' => 'QUANGCNTT 194',
-            'age' => 24,
-            'user_id' => 1
+        $data['sub_content']['products'] = [
+            [
+                'name' => 'QUANGCNTT 194',
+                'age' => 24,
+                'user_id' => 1
+            ],
+            [
+                'name' => 'QUANGCNTT 194',
+                'age' => 24,
+                'user_id' => 1
+            ]
         ];
         // $result = $this->db->table('product')->insert($data);
         // var_dump($result);
         // echo $this->product->insertProduct($data);
         // $this->product->deleteProduct(199);
+        $data['content'] = 'home/index';
+        $this->render('layouts/client_layout', $data);
     }
 
     public function get_user()
@@ -58,6 +67,7 @@ class Home extends Controller
         // $this->data['errors'] = Session::flash('errors');
         $this->data['msg'] = Session::flash('msg');
         // $this->data['old'] = Session::flash('old');
+
         $this->render('user/add', $this->data);
     }
 

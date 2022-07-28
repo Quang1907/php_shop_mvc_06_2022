@@ -8,9 +8,10 @@ class AuthMiddleware extends Middlewares
         // $data = $this->db->table('user')->get();
         // var_dump($data);
 
-        $home = Load::model('homeModel');
-        $data['product_list'] = $home->getListProduct();
-        Load::view('products/list', $data);
+        // $home = Load::model('homeModel');
+        // $data['product_list'] = $home->getListProduct();
+        // Load::view('products/list', $data);
+
         // echo "<pre>";
         // var_dump($data);
 

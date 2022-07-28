@@ -15,7 +15,6 @@ class Product extends Controller
         $product = $this->model('ProductModel');
         $this->data['sub_content']['product_list'] =  $product->getProductList();
         $this->data['sub_content']['title'] = 'danh sach san pham';
-        $this->data['page_title'] = 'list';
         $this->data['content'] = 'products/list';
         $this->render('layouts/client_layout', $this->data);
     }

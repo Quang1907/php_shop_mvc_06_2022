@@ -9,5 +9,8 @@ $config['app'] = [
     ],
     'globalMiddleware' => [
         ParamsMiddleware::class
+    ],
+    'boot' => [
+        AppServiceProvider::class,
     ]
 ];
