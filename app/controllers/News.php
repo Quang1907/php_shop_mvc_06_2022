@@ -3,8 +3,13 @@
 class News extends Controller
 {
 
-    public function category($id)
+    public $data  = [];
+    public function index()
     {
-        echo 'tin tuc - ' . $id;
+        $this->data['new_title'] = "Tin tức thời sự 1";
+        $this->data['new_content'] = "Tin tức thời sự 2 <script>alert('quangcntt')</script>";
+        $this->data['new_author'] = "quang";
+        $this->data['page_title'] = 'test tieu de';
+        $this->render('news/list', $this->data);
     }
 }

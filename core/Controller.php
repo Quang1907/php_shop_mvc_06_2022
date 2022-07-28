@@ -23,12 +23,17 @@ class Controller
         if (!empty(View::$dataShare)) {
             $data = array_merge($data, View::$dataShare);
         }
-        echo "<pre>";
-        print_r($data);
 
         extract($data); //  đổi key của mảng thành biến
+
+        ob_start();
         if (file_exists(_DIR_ROOT . '/app/views/' . $view . '.php')) {
             require_once _DIR_ROOT . '/app/views/' . $view . '.php';
         }
+        $contentView = ob_get_contents();
+        ob_end_clean();
+
+        $template = new Template();
+        $template->run($contentView, $data);
     }
 }
